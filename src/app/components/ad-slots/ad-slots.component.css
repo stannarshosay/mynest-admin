@@ -1,0 +1,65 @@
+.mat-form-field {
+    width: 30%;
+    margin-right: 25px;
+}
+
+.slot-container {
+    padding: 1%;
+}
+
+.date-slot {
+    margin: 5px 0px;
+}
+
+.date-slot input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.date-slot label {
+    padding: 15px 10px;
+    padding-left: 25px;
+    background-color: #f5f5f5;
+    color: black;
+    cursor: pointer;
+    font-size: 17px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.date-slot label>span {
+    float: right;
+    font-weight: lighter;
+}
+
+.date-slot:hover input+label {
+    background-color: lightgray;
+    color: black;
+}
+
+.date-slot input:checked+label {
+    background-color: #039eba;
+    color: white;
+}
+
+.data-container {
+    padding: 3%;
+}
+
+.date-slot input+label:before {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 10px;
+    background-color: rgb(1, 248, 1);
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+}
+
+.date-slot input+label.booked:before {
+    background-color: rgb(255, 17, 17);
+}

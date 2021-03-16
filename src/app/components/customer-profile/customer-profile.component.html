@@ -1,0 +1,57 @@
+<div class="data-container">
+    <div class="action-container">
+        <mat-slide-toggle [disabled]="isToggling" [checked]="isEnabled" (change)="changeActiveStatus($event)" color="primary" matTooltip="toggle active status">{{isEnabled?"Deactivate":"Activate"}}</mat-slide-toggle>
+    </div>
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingProfileDetails"></mat-spinner>
+    <mat-vertical-stepper *ngIf="!isGettingProfileDetails">
+        <mat-step label="Change password">
+            <div class="form-container">
+                <form [formGroup]="changePasswordForm">
+                    <table cellspacing="0" class="form-table">
+                        <tr>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Password*</mat-label>
+                                    <input matInput formControlName="password" type="password" placeholder="Password">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Confirm password*</mat-label>
+                                    <input matInput formControlName="repassword" type="password" placeholder="Confirm password">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isChanging"></mat-spinner>
+            <button mat-raised-button color="primary" *ngIf="!isChanging" (click)="changePassword()">Save</button>
+        </mat-step>
+        <mat-step label="Upload profile pic" state="done">
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingProfileDetails"></mat-spinner>
+            <div class="form-container" *ngIf="!isGettingProfileDetails">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>perm_identity</mat-icon>&nbsp;{{customerData.username}}</p>
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>email</mat-icon>&nbsp;{{customerData.email}}</p>
+                    <p fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>call</mat-icon>&nbsp;{{customerData.mobile}}</p>
+                </div>
+                <form>
+                    <div class="uploader">
+                        <input (change)="onProfileSelect($event)" type="file" hidden #profileFileInput accept="image/*">
+                        <button mat-raised-button color="primary" (click)="profileFileInput.click()">Choose profile&nbsp;{{profileProgress==0?'':profileProgress+'%'}}</button><br>
+                        <img *ngFor='let url of profilePreview' [src]="url " width="200px " style="margin: 3px;border-radius: 4px;"> <br *ngIf="profilePreview.length" />
+                        <mat-progress-bar mode="determinate" *ngIf="profileProgress!=0" [value]="profileProgress"></mat-progress-bar>
+                    </div>
+                </form>
+            </div>
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isUploading"></mat-spinner>
+            <!-- <div fxLayout="row" fxLayoutAlign="space-between " *ngIf="!isUploading">
+                <button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+            </div> -->
+        </mat-step>
+    </mat-vertical-stepper>
+</div>

@@ -1,0 +1,13 @@
+.sl-galleryTab__gallery--item img {
+    width: 100%;
+    height: 300px;
+    margin: 0px;
+}
+
+.sl-galleryTab__gallery--item:hover .mat-icon-button.mat-warn.deleteImg {
+    bottom: 10px;
+}
+
+.mat-icon-button.mat-warn.deleteImg {
+    left: 5px;
+}

@@ -1,0 +1,202 @@
+<div class="data-container">
+    <div class="action-container">
+        <mat-slide-toggle [disabled]="isToggling" [checked]="isEnabled" (change)="changeActiveStatus($event)" color="primary" matTooltip="toggle active status">{{isEnabled?"Deactivate":"Activate"}}</mat-slide-toggle>
+        <button [disabled]="isVerifying" (click)="verifyVendor()" mat-raised-button color="primary" matTooltip="verify vendor">Verify</button>
+    </div>
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingProfileDetails"></mat-spinner>
+    <mat-horizontal-stepper labelPosition="bottom" #stepper *ngIf="!isGettingProfileDetails">
+        <mat-step label="Company details">
+            <div class="form-container">
+                <form [formGroup]="companyDetailsForm">
+                    <table cellspacing="0" class="form-table">
+                        <tr>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Company name*</mat-label>
+                                    <input matInput formControlName="companyName" type="text" placeholder="Company name*">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Gst Number</mat-label>
+                                    <input matInput formControlName="gstNumber" type="text" placeholder="Gst Number">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Address*</mat-label>
+                                    <input matInput formControlName="address" type="text" placeholder="Address*">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>WhatsApp Number</mat-label>
+                                    <input matInput formControlName="whatsappNum" type="text" placeholder="whatsApp Number">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Website Url</mat-label>
+                                    <input matInput formControlName="websiteLink" type="text" placeholder="Website Url">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Select location*</mat-label>
+                                    <mat-select formControlName="location">
+                                        <mat-option>Select location*</mat-option>
+                                        <mat-option value="{{location.district}}" *ngFor="let location of locations">{{location.district}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <mat-form-field class="full-width" appearance="fill">
+                        <mat-label>About*</mat-label>
+                        <textarea matInput rows="5" formControlName="about" type="text" placeholder="About*"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="fill">
+                        <mat-label>Facebook Link</mat-label>
+                        <input matInput formControlName="fbLink" type="text" placeholder="Add Facebook Link">
+                    </mat-form-field>
+                    <mat-form-field class="full-width" appearance="fill">
+                        <mat-label>Youtube Link</mat-label>
+                        <input matInput formControlName="youtubeLink" type="text" placeholder="Add Youtube Link">
+                    </mat-form-field>
+                    <table class="form-table">
+                        <tr>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Longitude*</mat-label>
+                                    <input matInput type="text" (input)="setLat()" formControlName="latitude" placeholder="Longitude*">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Latitude*</mat-label>
+                                    <input matInput type="text" (input)="setLng()" formControlName="longitude" placeholder="Latitude*">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <agm-map [latitude]='latitude' [longitude]='longitude' (mapClick)="setLocation($event)">
+                            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)">
+                            </agm-marker>
+                        </agm-map>
+                    </div>
+
+
+                </form>
+            </div>
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isSavingDetails"></mat-spinner>
+            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="!isSavingDetails">
+                <button mat-raised-button color="primary" (click)="companyFormSubmit()">Save</button>
+                <button mat-raised-button matStepperNext color="primary">Next</button>
+            </div>
+        </mat-step>
+        <mat-step label="Category and location">
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingServiceAndLocationDetails"></mat-spinner>
+            <div class="form-container" *ngIf="!isGettingServiceAndLocationDetails">
+                <form [formGroup]="categoryAndLocationsForm">
+                    <h3>{{categoryName}}</h3>
+                    <br>
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Services</mat-label>
+                        <mat-select formControlName="subCategories" multiple>
+                            <mat-option value="{{subCategory.subCategoryName}}" *ngFor="let subCategory of subCategories">{{subCategory.subCategoryName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Preferred location</mat-label>
+                        <mat-select formControlName="preferredLocations" multiple>
+                            <mat-option value="{{location.district}}" *ngFor="let location of locations">{{location.district}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isSavingServiceAndLocation"></mat-spinner>
+            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="!isSavingServiceAndLocation">
+                <button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+                <button mat-raised-button color="primary" *ngIf="!isGettingServiceAndLocationDetails" (click)="categoryAndLocationFormSubmit()">Save</button>
+                <button mat-raised-button color="primary" matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step label="Change password">
+            <div class="form-container">
+                <form [formGroup]="changePasswordForm">
+                    <table cellspacing="0" class="form-table">
+                        <tr>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Password*</mat-label>
+                                    <input matInput formControlName="password" type="password" placeholder="Password">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="full-width" appearance="fill">
+                                    <mat-label>Confirm password*</mat-label>
+                                    <input matInput formControlName="repassword" type="password" placeholder="Confirm password">
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isChanging"></mat-spinner>
+            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="!isChanging">
+                <button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+                <button mat-raised-button color="primary" *ngIf="!isChanging" (click)="changePassword()">Save</button>
+                <button mat-raised-button color="primary" matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step label="Photos and gallery" state="done">
+            <div class="form-container">
+                <form>
+                    <div class="uploader">
+                        <input (change)="onProfileSelect($event)" type="file" hidden #profileFileInput accept="image/*">
+                        <button mat-raised-button color="primary" (click)="profileFileInput.click()">Choose profile&nbsp;{{profileProgress==0?'':profileProgress+'%'}}</button><br>
+                        <img *ngFor='let url of profilePreview' [src]="url " width="200px " style="margin: 3px;border-radius: 4px;"> <br *ngIf="profilePreview.length" />
+                        <mat-progress-bar mode="determinate" *ngIf="profileProgress!=0" [value]="profileProgress"></mat-progress-bar>
+                    </div>
+                    <div class="uploader">
+                        <input (change)="onLogoSelect($event) " type="file " hidden #logoFileInput accept="image/* ">
+                        <button mat-raised-button color="primary" (click)="logoFileInput.click()">Choose logo&nbsp;{{logoProgress==0?'':logoProgress+'%'}}</button><br>
+                        <img *ngFor='let url of logoPreview' [src]="url" width="200px" style="margin: 3px;border-radius: 4px;"> <br *ngIf="logoPreview.length" />
+                        <mat-progress-bar mode="determinate" *ngIf="logoProgress!=0" [value]="logoProgress"></mat-progress-bar>
+                    </div>
+                    <div class="uploader">
+                        <input (change)="onBrochureSelect($event) " type="file " hidden #brochureFileInput accept="application/pdf,application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <button mat-raised-button color="primary" (click)="brochureFileInput.click()">Choose brochure&nbsp;{{brochureProgress==0?'':brochureProgress+'%'}}</button>
+                        <p>{{brochureFilename}}</p>
+                        <mat-progress-bar mode="determinate" *ngIf="brochureProgress!=0" [value]="brochureProgress"></mat-progress-bar>
+                    </div>
+                    <div class="uploader">
+                        <input (change)="onGallerySelect($event)" type="file" hidden #galleryFileInput multiple accept="image/*">
+                        <button mat-raised-button color="primary" (click)="galleryFileInput.click()">Choose gallery&nbsp;{{galleryProgress==0?'':galleryProgress+'%'}}</button><br>
+                        <mat-hint>max {{galleryMaxCount}}</mat-hint><br>
+                        <mat-progress-bar mode="determinate" *ngIf="galleryProgress!=0" [value]="galleryProgress"></mat-progress-bar>
+                    </div>
+                    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingGalleryDetails"></mat-spinner>
+                    <div *ngIf="!isGettingGalleryDetails">
+                        <div class="gallery" fxLayout="row">
+                            <div class="sl-galleryTab__gallery--item" *ngFor="let url of existingGallery">
+                                <img src="https://mynestonline.com/collection/images/gallery/{{url}}" alt="Image Description" width="200px">
+                                <button mat-icon-button color="warn" class="deleteImg" href="javascript:void(0);" (click)=deleteGalleryImage(url)><mat-icon>close</mat-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isUploading"></mat-spinner>
+            <div fxLayout="row" fxLayoutAlign="space-between " *ngIf="!isUploading">
+                <button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

@@ -1,0 +1,40 @@
+<div class="data-container">
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isLoadingCategoriesAndLocations"></mat-spinner>
+
+    <div class="white-background mat-elevation-z1" *ngIf="!isLoadingCategoriesAndLocations">
+        <form [formGroup]="slotsForm">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="categoryId" (selectionChange)="loadSlots()">
+                        <mat-option value="{{category.categoryId}}" *ngFor="let category of categories">{{category.categoryName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Location</mat-label>
+                    <mat-select formControlName="district" (selectionChange)="loadSlots()">
+                        <mat-option value="{{location.district}}" *ngFor="let location of locations">{{location.district}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="sl-dashboardbox">
+                <div class="slot-title">
+                    <h4>Select slots to edit price</h4>
+                </div>
+                <br>
+                <mat-spinner [diameter]="30" *ngIf="isLoadingSlots"></mat-spinner>
+                <div class="slot-container" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                    <div class="date-slot" fxFlex="33" *ngFor="let slot of slots">
+                        <input type="checkbox" id="{{slot.slotId}}" (change)="toggleSlot($event,slot)">
+                        <label fxFlex [class.booked]="slot.slotStatus != 'AVAILABLE'" for="{{slot.slotId}}" [matTooltip]="slot.slotStatus">
+                        {{slot.startingDate}} to {{slot.endingDate}}
+                        <span>&#8377;{{slot.price}}</span>
+                    </label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <button color="primary" mat-raised-button [disabled]="isBooking" *ngIf="selectedSlots.length" (click)="editSlotPrice()">Edit Tariff</button>
+        </form>
+    </div>
+</div>

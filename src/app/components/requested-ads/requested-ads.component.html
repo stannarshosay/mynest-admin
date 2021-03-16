@@ -1,0 +1,74 @@
+<div class="data-container">
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingRequestedAds"></mat-spinner>
+    <div *ngIf="(!isGettingRequestedAdsSuccess)&&(!ads.length)" class="mn-no-results" fxLayout="column" fxLayoutAlign="center center">
+        <img src="assets/images/no-results.png">
+        <p>Sorry, no results found.</p>
+    </div>
+
+    <table mat-table [dataSource]="ads| paginate:config" class="mat-elevation-z1" [hidden]="!ads.length" multiTemplateDataRows>
+        <ng-container matColumnDef="vendor">
+            <th mat-header-cell *matHeaderCellDef>Company Name</th>
+            <td mat-cell *matCellDef="let element" [matTooltipPosition]="beforeTooltip" matTooltip="click to view vendor" (click)="goToVendorProfile(element.vendorId)"> {{element.companyName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="bookeddate">
+            <th mat-header-cell *matHeaderCellDef> Booked Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.bookedDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef> Location </th>
+            <td mat-cell *matCellDef="let element"> {{element.locationName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef> Category </th>
+            <td mat-cell *matCellDef="let element"> {{element.categoryName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="startingdate">
+            <th mat-header-cell *matHeaderCellDef> Starting Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.startingDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="endingdate">
+            <th mat-header-cell *matHeaderCellDef> Ending Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.endingDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="accept">
+            <th mat-header-cell *matHeaderCellDef> Accept </th>
+            <td mat-cell *matCellDef="let element">
+                <button [disabled]="isSettingStatus" matTooltip="accept ad" mat-icon-button color="primary" (click)="acceptAd(element.vendorAdId)"><mat-icon>done</mat-icon></button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="reject">
+            <th mat-header-cell *matHeaderCellDef> Reject </th>
+            <td mat-cell *matCellDef="let element">
+                <button [disabled]="isSettingStatus" matTooltip="reject ad" mat-icon-button color="warn" (click)="rejectAd(element.vendorAdId)"><mat-icon>close</mat-icon></button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="element-diagram">
+                        <div class="element-pic" *ngIf="(element.adPicturePath)&&(element.adPicturePath!='')">
+                            <img src="https://mynestonline.com/collection/images/vendor-advertisement/{{getEncodedString(element.adPicturePath)}}">
+                        </div>
+                    </div>
+                    <div class="element-description" fxLayout="column">
+                        <div class="element-date"> {{element.bookedDate}} </div>
+                        <div class="element-category"> {{element.categoryName}} </div>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <span><mat-icon color="primary">location_on</mat-icon></span>
+                            <span>{{element.locationName}}</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="element-row" [class.expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+    </table>
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <pagination-controls (pageChange)="pageChange($event)" autoHide="true" responsive="true" previousLabel="" nextLabel=""></pagination-controls>
+    </div>
+</div>

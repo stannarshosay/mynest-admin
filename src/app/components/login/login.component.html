@@ -1,0 +1,20 @@
+<div class="login-container">
+    <div class="login-box" fxLayout="column" fxLayoutAlign="center center">
+        <h2>Login</h2>
+        <form>
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Username*</mat-label>
+                <input matInput [formControl]="username" type="text" placeholder="Username">
+            </mat-form-field>
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Password*</mat-label>
+                <input matInput [formControl]="password" type="password" placeholder="Password">
+            </mat-form-field>
+            <mat-spinner [diameter]="30" *ngIf="isLogging"></mat-spinner>
+        </form>
+        <button mat-raised-button color="primary" (click)="login()" href="javascript:void(0);" *ngIf="!isLogging">Login</button>
+        <div class="loginfooterinfo">
+            <a href="javascript:void(0);" (click)="forgotPassword()" class="forgot-password">Forgot password?</a>
+        </div>
+    </div>
+</div>

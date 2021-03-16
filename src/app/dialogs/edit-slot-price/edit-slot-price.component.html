@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Edit Slot Price</h1>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="slotEditForm">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Seasonal Price</mat-label>
+            <input matInput type="number" formControlName="price">
+        </mat-form-field>
+        <mat-hint>positive value to increment and negative value to decrement respective to base price</mat-hint>
+        <br>
+        <br>
+        <h2>Base Price &nbsp;&#8377;{{basePrice}}</h2>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-spinner [diameter]="30" *ngIf="isEditing"></mat-spinner>
+    <button mat-raised-button *ngIf="!isEditing" color="warn" mat-dialog-close [mat-dialog-close]="false">Cancel</button>
+    <button *ngIf="!isEditing" mat-raised-button color="primary" (click)="editSlotPrice()">Edit</button>
+</mat-dialog-actions>

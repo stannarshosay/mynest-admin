@@ -1,0 +1,41 @@
+<div class="data-container">
+    <div class="action-container one-button">
+        <button mat-raised-button color="primary" matTooltip="add category" (click)="openAddCategoryDialog()">Add Category</button>
+    </div>
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingCategories"></mat-spinner>
+    <div *ngIf="!isGettingCategoriesSuccess" class="mn-no-results" fxLayout="column" fxLayoutAlign="center center">
+        <img src="assets/images/no-results.png">
+        <p>Sorry, no categories found.</p>
+    </div>
+    <mat-accordion *ngIf="!isGettingCategories" class="category-accordian">
+        <mat-expansion-panel *ngFor="let category of categories" (opened)="getSubcategoriesByCategoryId(category.categoryId)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <img class="category-icon" src="https://mynestonline.com/collection/images/category-icons/{{getEncodedString(category.iconPath)}}">
+                        <span>{{category.categoryName}}</span>
+                    </div>
+                    <button mat-icon-button color="primary" matTooltip="edit category" (click)="$event.stopPropagation();editCategory(category)"><mat-icon>edit</mat-icon></button>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingSubcategories"></mat-spinner>
+            <div *ngIf="!isGettingSubcategories" class="subcategory-container">
+                <mat-list *ngFor="let sub of subcategories">
+                    <mat-list-item fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column">
+                            <span>{{sub.subCategoryName}}</span>
+                            <h5 class="text-muted">{{sub.description}}</h5>
+                        </div>
+                        <button mat-icon-button color="primary" matTooltip="edit subcategory" (click)="editSubcategory(sub)"><mat-icon>edit</mat-icon></button>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+
+            <mat-action-row>
+                <button mat-button color="primary" (click)="openAddSubcategoryDialog(category.categoryId)">Add Subcategory</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</div>
