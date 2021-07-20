@@ -1,0 +1,59 @@
+<div class="data-container">
+    <div class="action-container">
+        <button mat-button color="primary" (click)="changeAll(true)" matTooltip="change base price for all slots">Change All Base Price</button>
+        <button mat-button color="primary" (click)="changeAll(false)" matTooltip="change duration for all slots">Change All Duration</button>
+    </div>
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isLoadingCategoriesAndLocations"></mat-spinner>
+    <div class="white-background mat-elevation-z1" *ngIf="!isLoadingCategoriesAndLocations">
+        <form [formGroup]="slotsForm">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="categoryId">
+                        <mat-option>None</mat-option>
+                        <mat-option value="{{category.categoryId}}" *ngFor="let category of categories">{{category.categoryName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Location</mat-label>
+                    <mat-select formControlName="location">
+                        <mat-option>None</mat-option>
+                        <mat-option value="{{location.district}}" *ngFor="let location of locations">{{location.district}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+        <div class="sl-dashboardbox">
+            <div class="slot-title">
+                <h4>Select category or location or both to edit price and duration based on the selection</h4>
+            </div>
+            <br>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Ad Base Price</mat-label>
+                    <input matInput type="number" min="0" [formControl]="basePrice">
+                    <mat-hint align="start">All slots base price respective of choosed category and location is changed, please provide a meaningful value.</mat-hint>
+                    <mat-error *ngIf="basePrice.hasError('pattern')">
+                        Please enter a valid price
+                    </mat-error>
+                </mat-form-field>
+                <button color="primary" mat-raised-button (click)="changeBasePrice()" *ngIf="!isChangingBasePrice">Change Base Price</button>
+                <mat-spinner [diameter]="30" *ngIf="isChangingBasePrice"></mat-spinner>
+            </div>
+            <br><br><br>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Ad Duration</mat-label>
+                    <input matInput type="number" min="0" [formControl]="duration">
+                    <mat-hint align="start">All slots duration respective of choosed category and location is changed, duration change is only reflected for upcoming slots generated, please provide a meaningful duration in days(min 5).</mat-hint>
+                    <mat-error *ngIf="duration.hasError('pattern')">
+                        Please enter a valid duration
+                    </mat-error>
+                </mat-form-field>
+                <button color="primary" mat-raised-button (click)="changeDuration()" *ngIf="!isChangingDuration">Change Duration</button>
+                <mat-spinner [diameter]="30" *ngIf="isChangingDuration"></mat-spinner>
+            </div>
+        </div>
+        <br><br><br><br>
+    </div>
+</div>

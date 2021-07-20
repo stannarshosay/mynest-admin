@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Add News Feed</h1>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="newsForm">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput type="text" formControlName="title">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <div class="uploader">
+            <input (change)="onImageSelect($event,imageFileInput)" type="file" hidden #imageFileInput accept="image/*">
+            <button mat-raised-button color="primary" (click)="imageFileInput.click()">Choose Image</button><br>
+            <img *ngFor='let url of imagePreview' [src]="url" height="150 " width="200px" style="margin: 3px;"> <br *ngIf="imageFile" />
+        </div>
+    </form>
+    <h3>{{progress==0?'':progress+'%'}}</h3>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-progress-bar mode="determinate" *ngIf="progress!=0" [value]="progress"></mat-progress-bar>
+    <button mat-raised-button *ngIf="!isAdding" color="warn" mat-dialog-close [mat-dialog-close]="false">Cancel</button>
+    <button *ngIf="!isAdding" mat-raised-button color="primary" (click)="addNewsfeed()">Add</button>
+</mat-dialog-actions>

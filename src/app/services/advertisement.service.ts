@@ -27,13 +27,25 @@ export class AdvertisementService {
   getHomeGalleryImagesByType(adType:string){
     return this.http.get("https://mynestonline.com/collection/api/admin-ad?adType="+adType);
   }
-  uploadAdPicByAdType(fileFormData:any,adType:string){
-    return this.http.post("https://mynestonline.com/collection/api/upload/admin-ads?adType="+adType,fileFormData,{
+  uploadAdPicByAdType(fileFormData:any,adType:string,link:any){
+    return this.http.post("https://mynestonline.com/collection/api/upload/admin-ads?adType="+adType+"&link="+link,fileFormData,{
       reportProgress: true,
       observe: 'events'
     });
   }
   deleteHomeAdImage(id:string){
     return this.http.delete("https://mynestonline.com/collection/api/delete/admin-ad?id="+id);
+  }
+  changeAllBasePrice(basePrice:any){
+    return this.http.put("https://mynestonline.com/collection/api/advertisement/baseprice/change-all?basePrice="+basePrice,null);
+  }
+  changeAllDuration(duration:any){
+    return this.http.put("https://mynestonline.com/collection/api/advertisement/duration/change-all?duration="+duration,null);
+  }
+  changeBasePrice(params:any){
+    return this.http.put("https://mynestonline.com/collection/api/advertisement/baseprice/change",params);
+  }
+  changeDuration(params:any){
+    return this.http.put("https://mynestonline.com/collection/api/advertisement/duration/change",params);
   }
 }

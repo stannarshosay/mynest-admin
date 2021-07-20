@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AdvertisementService } from 'src/app/services/advertisement.service';
-
+import { startWith, map } from 'rxjs/operators';
 @Component({
   selector: 'app-edit-slot-price',
   templateUrl: './edit-slot-price.component.html',
@@ -14,6 +14,8 @@ export class EditSlotPriceComponent implements OnInit {
   slotEditForm:FormGroup;
   totalAmount:number = 0;
   basePrice:number = 0;
+  currentSlotPrice:number = 0;
+  slotPrice:number = 0;
   constructor(
     public dialogRef: MatDialogRef<EditSlotPriceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,14 +26,19 @@ export class EditSlotPriceComponent implements OnInit {
 
   ngOnInit(): void {
     this.totalAmount = Number(this.data.slots[0].price);
-    this.basePrice = this.totalAmount;
+    this.basePrice = Number(this.data.slots[0].basePrice);
+    this.currentSlotPrice = Number(this.data.slots[0].slotPrice);
+    this.slotPrice = this.currentSlotPrice;
     this.slotEditForm = this.fb.group({
-      price:[0,Validators.required]
+      price:[this.currentSlotPrice,Validators.required]
     });
-    this.slotEditForm.get("price").valueChanges.subscribe(res=>{
-      this.basePrice = this.totalAmount+res;
-      if(this.basePrice<=0){
-        this.showSnackbar("Base price can't be a negative value",true,"okay");
+    this.slotEditForm.get("price").valueChanges.pipe(
+      startWith(this.currentSlotPrice)
+    ).subscribe(res=>{
+      this.totalAmount = this.basePrice+Number(res);
+      this.slotPrice = res;
+      if(this.totalAmount<=0){
+        this.showSnackbar("Total price can't be a negative value",true,"okay");
         this.slotEditForm.get("price").setValue(0);
       }
     });

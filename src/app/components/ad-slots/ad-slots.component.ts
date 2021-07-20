@@ -6,6 +6,7 @@ import { EditSlotPriceComponent } from 'src/app/dialogs/edit-slot-price/edit-slo
 import { AdvertisementService } from 'src/app/services/advertisement.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { LocationService } from 'src/app/services/location.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ad-slots',
@@ -77,6 +78,7 @@ export class AdSlotsComponent implements OnInit {
   loadSlots(){    
     this.isLoadingSlots = true;
     this.slots = [];
+    this.selectedSlots = [];
     let param = {};
     param = this.slotsForm.value;
     param["adType"] = "SERVICE_LISTING"; 
@@ -96,7 +98,7 @@ export class AdSlotsComponent implements OnInit {
   toggleSlot(event:any,slot:any){
     if(event.target.checked){
       if(this.selectedSlots.length){
-        if(slot.price == this.selectedSlots[0].price){
+        if((slot.price == this.selectedSlots[0].price)&&(slot.basePrice == this.selectedSlots[0].basePrice)&&(slot.slotPrice == this.selectedSlots[0].slotPrice)){
           this.selectedSlots.push(slot);
         }else{
           event.target.checked = false;
@@ -127,6 +129,8 @@ export class AdSlotsComponent implements OnInit {
       }
     });     
   }
-
+  getBeautifiedDate(dateString:string){
+    return moment(dateString, "DD/MM/YYYY").format('Do MMM YYYY');
+  }
 
 }

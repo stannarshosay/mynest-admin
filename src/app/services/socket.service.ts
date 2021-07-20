@@ -31,7 +31,7 @@ export class SocketService {
   connectAndSubscribeToWebsocket(){
     let ws = new SockJS(this.webSocketEndPoint);
     this.stompClient = Stomp.over(ws);
-    // this.stompClient.debug = () => {};
+    this.stompClient.debug = () => {};
     let that = this;
     this.stompClient.connect({},function(frame:any) {      
      that.stompClient.subscribe("/user/" + localStorage.getItem("aid") + "/queue/notification",function(notification:any)
@@ -40,7 +40,12 @@ export class SocketService {
         that.playNotificationAudio();
        }       
      ); 
-    }, this.errorCallBack);
+    }, function(error:any){
+      console.log("errorCallBack -> " + error)
+      setTimeout(() => {
+          that.connectAndSubscribeToWebsocket();
+      }, 5000);
+    });
   } 
   playNotificationAudio(){
     let audio = new Audio();
@@ -48,12 +53,6 @@ export class SocketService {
     audio.load();
     audio.play();
   }
-  errorCallBack(error:any) {
-    console.log("errorCallBack -> " + error)
-    setTimeout(() => {
-        this.connectAndSubscribeToWebsocket();
-    }, 5000);
-  }  
   disconnectFromWebsocket(){
     if (this.stompClient !== null) {
       this.stompClient.disconnect();

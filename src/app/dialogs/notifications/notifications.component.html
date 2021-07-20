@@ -7,12 +7,12 @@
             <p>No notifications yet!</p>
         </div>
         <ul class="sl-allnotification" *ngIf="notifications.length">
-            <li *ngFor="let message of notifications | paginate:notificationConfig">
+            <li class="cursor-pointer" mat-dialog-close [mat-dialog-close]="false" *ngFor="let message of notifications | paginate:notificationConfig" (click)="goToRespectivePage(message.notificationType)">
                 <div class="sl-notititle" [class.read]="message.readStatus">
-                    <h4><a href="javascript:void(0);">{{message.createdDate}}</a></h4>
+                    <h4><a href="javascript:void(0);">{{message.message}}</a></h4>
                 </div>
                 <div class="sl-notidescription">
-                    <p>{{message.message}}</p>
+                    <p>{{message.createdDate}}</p>
                 </div>
             </li>
         </ul>

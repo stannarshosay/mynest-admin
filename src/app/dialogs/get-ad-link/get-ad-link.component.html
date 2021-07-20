@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Do you want to add a redirect link for your ad?</h1>
+<mat-dialog-content class="mat-typography">
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Redirect Link</mat-label>
+        <input matInput type="text" [formControl]="link">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="warn" (click)="dismiss(null)">No</button>
+    <button mat-raised-button color="primary" (click)="getLink()">Yes</button>
+</mat-dialog-actions>

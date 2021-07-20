@@ -28,6 +28,7 @@
                     <div class="element-diagram">
                         <div class="element-date"> {{element.createdDate}} </div>
                         <div class="element-category"> {{element.categoryName}} </div>
+                        <div *ngIf="element.subCategoryName" class="element-subcategory"><small>{{element.subCategoryName}}</small></div>
                         <div class="element-pic" *ngIf="(element.picName)&&(element.picName!='')">
                             <img src="https://mynestonline.com/collection/images/requirements/{{getEncodedString(element.picName)}}">
                         </div>

@@ -63,7 +63,7 @@ export class ActiveRequirementsComponent implements OnInit {
       this.isGettingRequirements = false;
       if(res["success"]){
         this.config["totalItems"] = res["data"]["totalElements"];
-        this.requirements = res["data"]["content"];   
+        this.requirements = res["data"]["content"];  
       }else{     
         this.isGettingRequirementsSuccess = false;
       }

@@ -3,6 +3,20 @@
         <mat-slide-toggle [disabled]="isToggling" [checked]="isEnabled" (change)="changeActiveStatus($event)" color="primary" matTooltip="toggle active status">{{isEnabled?"Deactivate":"Activate"}}</mat-slide-toggle>
         <button [disabled]="isVerifying" (click)="verifyVendor()" mat-raised-button color="primary" matTooltip="verify vendor">Verify</button>
     </div>
+    <div class="action-container agent-container" *ngIf="isAgent" (click)="goToAgent()">
+        <h4>Agent Details</h4>
+        <mat-divider></mat-divider>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+                <p><small><strong>mail:&nbsp;</strong>{{agent.email}}<strong>&nbsp;&nbsp;mob:&nbsp;</strong>{{agent.mobile}}</small></p>
+                <span>{{agent.firstName}}&nbsp;{{agent.lastName}},&nbsp;{{agent.location}}</span>
+            </div>
+            <div>
+                <p><small>Refferal Code</small></p>
+                <span class="refferal-code">{{agent.rewardCode}}</span>
+            </div>
+        </div>
+    </div>
     <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingProfileDetails"></mat-spinner>
     <mat-horizontal-stepper labelPosition="bottom" #stepper *ngIf="!isGettingProfileDetails">
         <mat-step label="Company details">

@@ -27,6 +27,8 @@ export class AddCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.categoryForm = this.fb.group({
       categoryName: ['', Validators.required],
+      adBasePrice: ['', Validators.pattern('^[1-9][0-9]*$')],
+      adDuration: ['', Validators.pattern('^[1-9][0-9]*$')],
       subCategories: this.fb.array([this.createItem()])
     });
     this.subCategories = this.categoryForm.get('subCategories') as FormArray;
@@ -58,8 +60,14 @@ export class AddCategoryComponent implements OnInit {
     if(this.iconFile){
         if(this.categoryForm.valid){
         this.isAdding = true;
-        this.showSnackbar("Please be patient! adding category...",false,"");
+        this.showSnackbar("Please be patient! adding category...",false,"");       
         let paramData = this.categoryForm.value;
+        if(!paramData["adBasePrice"]){
+          delete paramData["adBasePrice"];
+        }
+        if(!paramData["adDuration"]){
+          delete paramData["adDuration"];
+        }
         const uploadData = new FormData();
         uploadData.append('categoryIcon', this.iconFile);
         uploadData.append('categoryDTO',new Blob([JSON.stringify(paramData)], { type: "application/json"}));
@@ -75,7 +83,7 @@ export class AddCategoryComponent implements OnInit {
          this.showSnackbar("Connection error!",true,"close");
         });
       }else{
-        this.showSnackbar("Please fill all fields",true,"close");
+        this.showSnackbar("Please fill required data's",true,"close");
       }
     }else{
       this.showSnackbar("Please select a icon",true,"close");

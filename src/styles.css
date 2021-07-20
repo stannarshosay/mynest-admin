@@ -2875,7 +2875,8 @@ img.tb-company-logo {
     margin-bottom: 20px!important;
 }
 
-.vendor-filter-container .mat-form-field:not(:first-child) {
+.vendor-filter-container .mat-form-field:not(:first-child),
+.agent-filter-container .mat-form-field:not(:first-child) {
     margin-left: 10px!important;
 }
 

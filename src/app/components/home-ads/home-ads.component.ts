@@ -1,6 +1,8 @@
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { GetAdLinkComponent } from 'src/app/dialogs/get-ad-link/get-ad-link.component';
 import { AdvertisementService } from 'src/app/services/advertisement.service';
 
 @Component({
@@ -26,11 +28,12 @@ export class HomeAdsComponent implements OnInit {
 
   galleryTopFiles:File[] = [];
   galleryBottomFiles:File[] = [];
-
+  link:any = null;
 
   constructor(
     private snackBar:MatSnackBar,
-    private adService:AdvertisementService
+    private adService:AdvertisementService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -81,7 +84,14 @@ export class HomeAdsComponent implements OnInit {
       if(this.galleryTopFiles.length > this.topGalleryMaxCount){
         this.showSnackbar("Oops! max "+this.topGalleryMaxCount+" more ad images",true,"close");
       }else{
-        this.uploadTopGalleryPic(event);       
+        const dialogRef = this.dialog.open(GetAdLinkComponent,{
+          disableClose:true         
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {          
+          this.link = result;
+          this.uploadTopGalleryPic(event);       
+        });
       }
     }    
   }
@@ -91,7 +101,14 @@ export class HomeAdsComponent implements OnInit {
       if(this.galleryBottomFiles.length > this.bottomGalleryMaxCount){
         this.showSnackbar("Oops! max "+this.bottomGalleryMaxCount+" more ad images",true,"close");
       }else{
-        this.uploadBottomGalleryPic(event);       
+        const dialogRef = this.dialog.open(GetAdLinkComponent,{
+          disableClose:true         
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {          
+          this.link = result;
+          this.uploadBottomGalleryPic(event);
+        });               
       }
     }    
   }
@@ -102,7 +119,7 @@ uploadTopGalleryPic(fileEvent:any){
   for  (var i =  0; i <  this.galleryTopFiles.length; i++)  {  
     uploadData.append('adImages', this.galleryTopFiles[i]);
   } 
-  this.adService.uploadAdPicByAdType(uploadData,"HOME_BANNER").subscribe((event: HttpEvent<any>) => {
+  this.adService.uploadAdPicByAdType(uploadData,"HOME_BANNER",this.link).subscribe((event: HttpEvent<any>) => {
     switch (event.type) {
       case HttpEventType.Sent:
         this.galleryTopProgress = 1;
@@ -117,6 +134,7 @@ uploadTopGalleryPic(fileEvent:any){
         if(event.body["success"]){
           this.showSnackbar("Uploaded top ads",true,"close");   
           this.galleryTopFiles = [];
+          this.link = null;
           this.getTopGalleryImages();  
         }else{
           this.showSnackbar("Server error",true,"close");
@@ -143,7 +161,7 @@ uploadBottomGalleryPic(fileEvent:any){
   for  (var i =  0; i <  this.galleryBottomFiles.length; i++)  {  
     uploadData.append('adImages', this.galleryBottomFiles[i]);
   } 
-  this.adService.uploadAdPicByAdType(uploadData,"HOME_BANNER_BOTTOM").subscribe((event: HttpEvent<any>) => {
+  this.adService.uploadAdPicByAdType(uploadData,"HOME_BANNER_BOTTOM",this.link).subscribe((event: HttpEvent<any>) => {
     switch (event.type) {
       case HttpEventType.Sent:
         this.galleryBottomProgress = 1;
@@ -158,6 +176,7 @@ uploadBottomGalleryPic(fileEvent:any){
         if(event.body["success"]){
           this.showSnackbar("Uploaded bottom ads",true,"close");   
           this.galleryBottomFiles = [];
+          this.link = null;
           this.getBottomGalleryImages();  
         }else{
           this.showSnackbar("Server error",true,"close");

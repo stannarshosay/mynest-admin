@@ -2,7 +2,8 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AgentService } from 'src/app/services/agent.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { VendorService } from 'src/app/services/vendor.service';
 
@@ -13,7 +14,8 @@ import { VendorService } from 'src/app/services/vendor.service';
 })
 export class VendorProfileComponent implements OnInit {
  //based on membership
- galleryMaxCount:number = 10;
+  isAgent:boolean = false;
+  galleryMaxCount:number = 10;
   vendorId:any;
   isGettingProfileDetails:boolean = true;
   isGettingServiceAndLocationDetails:boolean = true;
@@ -29,7 +31,7 @@ export class VendorProfileComponent implements OnInit {
   companyDetailsForm: FormGroup;
   categoryAndLocationsForm: FormGroup;
   changePasswordForm: FormGroup;
-
+  agent:any = {};
   categoryName:any = "Loading...";
   categoryId:any;
 
@@ -61,6 +63,8 @@ export class VendorProfileComponent implements OnInit {
     private vendorService:VendorService,
     private categoryService:CategoryService,
     private snackBar:MatSnackBar,
+    private agentService:AgentService,
+    private router:Router,
     private fb:FormBuilder
   ) { }
 
@@ -90,6 +94,7 @@ export class VendorProfileComponent implements OnInit {
       repassword:['',Validators.required]
     });
     this.getAllLocation();
+    this.getAgentDetails();
   }
   showSnackbar(content:string,hasDuration:boolean,action:string){
     const config = new MatSnackBarConfig();
@@ -98,6 +103,20 @@ export class VendorProfileComponent implements OnInit {
     }
     config.panelClass = ['snackbar-styler'];
     return this.snackBar.open(content, action, config);
+  }
+  getAgentDetails(){
+    this.agentService.getAgentDetailsByVendorId(this.vendorId).subscribe(res=>{
+      if(res["success"]){
+        this.isAgent = res["data"]?true:false;
+        this.agent = res["data"];
+      }else{
+        this.isAgent = false;
+        this.showSnackbar("Agent detail error!",true,"close");
+      }
+    },error=>{
+      this.isAgent = false;
+      this.showSnackbar("Connection error!",true,"close");
+    });
   }
   getAllLocation(){
     this.vendorService.getAllLocations().subscribe(res=>{
@@ -575,5 +594,7 @@ changeActiveStatus(event:any){
       this.showSnackbar("Please fill all required fields",true,"okay");
     }     
   }
-  
+  goToAgent(){
+    this.router.navigate(["agents-vendors/"+this.agent.agentId+"/"+this.agent.location]);
+  }
 }

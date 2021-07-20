@@ -47,3 +47,12 @@ tr.element-row:not(.expanded-row):active {
 .element-pic img {
     width: 100%;
 }
+
+.element-subcategory {
+    padding: 0px 8px;
+    display: inline-block;
+    background-color: darkgray;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}

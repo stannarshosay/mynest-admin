@@ -1,0 +1,32 @@
+<div class="data-container">
+    <div class="action-container one-button">
+        <button mat-fab color="warn" matTooltip="delete this newfeed" (click)="deleteNewsfeed()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isNewsfeedLoaded"></mat-spinner>
+    <div *ngIf="!isNewsfeedDataSuccess" class="mn-no-results" fxLayout="column" fxLayoutAlign="center center">
+        <img src="assets/images/no-results.png">
+        <p>Sorry, no newfeeds found.</p>
+    </div>
+    <div class="m-auto" *ngIf="news">
+        <div class="sl-blogsingle">
+            <img src="https://mynestonline.com/collection/images/newsfeed/{{getImagePath(news.imagePath)}}" alt="News pic">
+            <div class="sl-blogsinglehead">
+                <div class="sl-blogsinglehead__title">
+                    <h2>{{news.title}}</h2>
+                </div>
+                <ul class="sl-blogsinglehead__blogpostmeta">
+                    <li>
+                        <a href="javascript:void(0);">
+                            <i class="ti-calendar"></i><span>{{getBeautifiedDate(news.createdDate)}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sl-blogsingle__description">
+                <p>{{news.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>

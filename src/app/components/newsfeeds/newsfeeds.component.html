@@ -1,0 +1,33 @@
+<div class="data-container">
+    <div class="action-container one-button">
+        <button mat-raised-button color="primary" matTooltip="add newfeeds" (click)="openAddNewsFeedDialog()">Add News Feed</button>
+    </div>
+    <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingNewsfeeds"></mat-spinner>
+    <div *ngIf="isGettingNewsfeedSuccess" class="mn-no-results" fxLayout="column" fxLayoutAlign="center center">
+        <img src="assets/images/no-results.png">
+        <p>Sorry, no newfeeds found.</p>
+    </div>
+    <div class="sl-serviceProvider sl-serviceProvider-blog" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="30px">
+        <div *ngFor="let news of newsfeeds | paginate:config" class="sl-latestblog sl-featuredProducts--post" [routerLink]="['/newsfeed/'+news.newsId]">
+            <img class="news-image" src="https://mynestonline.com/collection/images/newsfeed/{{getImagePath(news.imagePath)}}" alt="Image Description">
+            <div class="sl-featuredProducts--post__content">
+                <div class="sl-featuredProducts--post__title">
+                    <div fxLayout="row nowrap" fxLayoutAlign="space-between center">
+                        <h3>{{news.title}}</h3>
+                        <button mat-icon-button color="warn" matTooltip="delete newfeed" (click)="deleteNewsfeed(news.newsId,$event)" aria-label="delete newfeed">
+                            <mat-icon aria-hidden="false" aria-label="delete newsfeed">delete</mat-icon>
+                        </button>
+                    </div>
+                    <time>{{getBeautifiedDate(news.createdDate)}}</time>
+                    <div class="sl-description">
+                        <p class="mn-news-p">{{checkLength(news.description)}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <pagination-controls (pageChange)="pageChange($event)" autoHide="true" responsive="true" previousLabel="" nextLabel=""></pagination-controls>
+    </div>
+
+</div>

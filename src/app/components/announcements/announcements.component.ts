@@ -36,6 +36,7 @@ export class AnnouncementsComponent implements OnInit {
   }
   getAllAnnouncements(){
     this.isGettingAnnouncements = true;
+    this.isGettingAnnouncementsSuccess = true;
     this.loginService.getAllAnnouncements().subscribe(res=>{
       this.isGettingAnnouncements = false;
       if(res["success"]){

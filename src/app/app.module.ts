@@ -24,7 +24,6 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBadgeModule} from '@angular/material/badge';
 
-
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -63,6 +62,23 @@ import { CustomerProfileComponent } from './components/customer-profile/customer
 import { ChangePasswordComponent } from './dialogs/change-password/change-password.component';
 import { AnnouncementsComponent } from './components/announcements/announcements.component';
 import { AddAnnouncementComponent } from './dialogs/add-announcement/add-announcement.component';
+import { GetAdLinkComponent } from './dialogs/get-ad-link/get-ad-link.component';
+import { NewsfeedsComponent } from './components/newsfeeds/newsfeeds.component';
+import { AddNewsfeedComponent } from './dialogs/add-newsfeed/add-newsfeed.component';
+import { NewsfeedComponent } from './components/newsfeed/newsfeed.component';
+import { DeleteNewsfeedComponent } from './dialogs/delete-newsfeed/delete-newsfeed.component';
+import { BaseDurationComponent } from './components/base-duration/base-duration.component';
+import { ChangeBasePriceComponent } from './dialogs/change-base-price/change-base-price.component';
+import { ChangeDurationComponent } from './dialogs/change-duration/change-duration.component';
+import { ManageAgentsComponent } from './components/manage-agents/manage-agents.component';
+import { AgentAnnouncementsComponent } from './components/agent-announcements/agent-announcements.component';
+import { AddAgentComponent } from './dialogs/add-agent/add-agent.component';
+import { AddAgentAnnouncementComponent } from './dialogs/add-agent-announcement/add-agent-announcement.component';
+import { DeleteCommonComponent } from './dialogs/delete-common/delete-common.component';
+import { AgentsVendorsComponent } from './components/agents-vendors/agents-vendors.component';
+import { BuisnessDetailsComponent } from './dialogs/buisness-details/buisness-details.component';
+import { AgentAddRequestsComponent } from './components/agent-add-requests/agent-add-requests.component';
+import { AgentRemoveRequestsComponent } from './components/agent-remove-requests/agent-remove-requests.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +110,24 @@ import { AddAnnouncementComponent } from './dialogs/add-announcement/add-announc
     CustomerProfileComponent,
     ChangePasswordComponent,
     AnnouncementsComponent,
-    AddAnnouncementComponent
+    AddAnnouncementComponent,
+    GetAdLinkComponent,
+    NewsfeedsComponent,
+    AddNewsfeedComponent,
+    NewsfeedComponent,
+    DeleteNewsfeedComponent,
+    BaseDurationComponent,
+    ChangeBasePriceComponent,
+    ChangeDurationComponent,
+    ManageAgentsComponent,
+    AgentAnnouncementsComponent,
+    AddAgentComponent,
+    AddAgentAnnouncementComponent,
+    DeleteCommonComponent,
+    AgentsVendorsComponent,
+    BuisnessDetailsComponent,
+    AgentAddRequestsComponent,
+    AgentRemoveRequestsComponent
   ],
   imports: [
     BrowserModule,

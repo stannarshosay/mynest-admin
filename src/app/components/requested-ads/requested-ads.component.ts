@@ -24,7 +24,7 @@ export class RequestedAdsComponent implements OnInit {
   isGettingRequestedAdsSuccess:boolean = true;
   isSettingStatus:boolean = false;
   pageNo:number = 0;
-  pageSize:number = 2;
+  pageSize:number = 10;
   ads:any[] = [];
   config = {};
   displayedColumns: string[] = ['vendor','bookeddate','location','category','startingdate','endingdate','accept','reject'];

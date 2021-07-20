@@ -5,10 +5,12 @@
             <mat-label>Seasonal Price</mat-label>
             <input matInput type="number" formControlName="price">
         </mat-form-field>
-        <mat-hint>positive value to increment and negative value to decrement respective to base price</mat-hint>
+        <mat-hint>positive value to increment and negative value to decrement respective to base price, current slot price is <strong>{{currentSlotPrice}}&#8377;</strong></mat-hint>
         <br>
         <br>
-        <h2>Base Price &nbsp;&#8377;{{basePrice}}</h2>
+        <h3>Base Price &nbsp;{{basePrice}}&#8377;</h3>
+        <h3>New Slot Price &nbsp;{{slotPrice}}&#8377;</h3>
+        <h3>Total Price &nbsp;{{totalAmount}}&#8377;</h3>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
