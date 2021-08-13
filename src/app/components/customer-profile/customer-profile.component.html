@@ -40,10 +40,11 @@
                         <mat-icon>call</mat-icon>&nbsp;{{customerData.mobile}}</p>
                 </div>
                 <form>
+                    <mat-hint>max 500 kb, preffered dimension 200 x 150 in pixels</mat-hint>
                     <div class="uploader">
-                        <input (change)="onProfileSelect($event)" type="file" hidden #profileFileInput accept="image/*">
+                        <input (change)="onProfileSelect($event)" (click)="profileFileInput.value = null" type="file" hidden #profileFileInput accept="image/*">
                         <button mat-raised-button color="primary" (click)="profileFileInput.click()">Choose profile&nbsp;{{profileProgress==0?'':profileProgress+'%'}}</button><br>
-                        <img *ngFor='let url of profilePreview' [src]="url " width="200px " style="margin: 3px;border-radius: 4px;"> <br *ngIf="profilePreview.length" />
+                        <img *ngFor='let url of profilePreview' [src]="url " height="150" width="200px" style="object-fit: cover; margin: 3px;border-radius: 4px;"> <br *ngIf="profilePreview.length" />
                         <mat-progress-bar mode="determinate" *ngIf="profileProgress!=0" [value]="profileProgress"></mat-progress-bar>
                     </div>
                 </form>

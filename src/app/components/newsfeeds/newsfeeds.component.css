@@ -88,4 +88,5 @@ time {
 
 img.news-image {
     height: 230px;
+    object-fit: cover;
 }

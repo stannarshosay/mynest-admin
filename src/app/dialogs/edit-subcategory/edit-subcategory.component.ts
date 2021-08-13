@@ -12,6 +12,7 @@ import { CategoryService } from 'src/app/services/category.service';
 export class EditSubcategoryComponent implements OnInit {
   isAdding:boolean = false;
   subcategoryForm:FormGroup;
+  maxChars:string = "400";
   constructor(
     public dialogRef: MatDialogRef<EditSubcategoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

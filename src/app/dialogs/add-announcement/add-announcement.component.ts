@@ -12,6 +12,7 @@ import { LoginService } from 'src/app/services/login.service';
 export class AddAnnouncementComponent implements OnInit {
   isAdding:boolean = false;
   announcementForm:FormGroup;
+  maxChars:string = "500";
   constructor(
     public dialogRef: MatDialogRef<AddAnnouncementComponent>,
     private snackBar:MatSnackBar,

@@ -12,6 +12,7 @@ import { AgentService } from 'src/app/services/agent.service';
 export class AddAgentAnnouncementComponent implements OnInit {
   isAdding:boolean = false;
   announcementForm:FormGroup;
+  maxChars:string = "500";
   constructor(
     public dialogRef: MatDialogRef<AddAgentAnnouncementComponent>,
     private snackBar:MatSnackBar,

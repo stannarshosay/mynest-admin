@@ -24,11 +24,19 @@ export class AdvertisementService {
   editSlotPrice(params:any){
     return this.http.post("https://mynestonline.com/collection/api/slots/change-price",params);
   }
-  getHomeGalleryImagesByType(adType:string){
-    return this.http.get("https://mynestonline.com/collection/api/admin-ad?adType="+adType);
+  getHomeGalleryImagesByType(adType:string,isMobile:boolean){
+    var url = "https://mynestonline.com/collection/api/admin-ad?adType="+adType;
+    if(isMobile){
+      url = url + "&platform=mobile";
+    }
+    return this.http.get(url);
   }
-  uploadAdPicByAdType(fileFormData:any,adType:string,link:any){
-    return this.http.post("https://mynestonline.com/collection/api/upload/admin-ads?adType="+adType+"&link="+link,fileFormData,{
+  uploadAdPicByAdType(fileFormData:any,adType:string,link:any,isMobile:boolean){
+    var url = "https://mynestonline.com/collection/api/upload/admin-ads?adType="+adType+"&link="+link;
+    if(isMobile){
+      url = url + "&platform=mobile";
+    }
+    return this.http.post(url,fileFormData,{
       reportProgress: true,
       observe: 'events'
     });

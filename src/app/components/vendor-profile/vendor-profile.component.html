@@ -69,10 +69,10 @@
                             </td>
                         </tr>
                     </table>
-
+                    <mat-hint>{{companyDetailsForm.controls.about.value.length}}/{{maxChars}}</mat-hint>
                     <mat-form-field class="full-width" appearance="fill">
                         <mat-label>About*</mat-label>
-                        <textarea matInput rows="5" formControlName="about" type="text" placeholder="About*"></textarea>
+                        <textarea matInput rows="5" formControlName="about" [maxLength]="maxChars" type="text" placeholder="About*"></textarea>
                     </mat-form-field>
                     <mat-form-field class="full-width" appearance="fill">
                         <mat-label>Facebook Link</mat-label>
@@ -172,35 +172,39 @@
         <mat-step label="Photos and gallery" state="done">
             <div class="form-container">
                 <form>
+                    <mat-hint>max 800 kb, preffered dimension 255 x 180 in pixels</mat-hint>
                     <div class="uploader">
-                        <input (change)="onProfileSelect($event)" type="file" hidden #profileFileInput accept="image/*">
+                        <input (change)="onProfileSelect($event)" (click)="profileFileInput.value = null" type="file" hidden #profileFileInput accept="image/*">
                         <button mat-raised-button color="primary" (click)="profileFileInput.click()">Choose profile&nbsp;{{profileProgress==0?'':profileProgress+'%'}}</button><br>
-                        <img *ngFor='let url of profilePreview' [src]="url " width="200px " style="margin: 3px;border-radius: 4px;"> <br *ngIf="profilePreview.length" />
+                        <img *ngFor='let url of profilePreview' [src]="url " height="120" width="200px" style="margin: 3px;border-radius: 4px;"> <br *ngIf="profilePreview.length" />
                         <mat-progress-bar mode="determinate" *ngIf="profileProgress!=0" [value]="profileProgress"></mat-progress-bar>
                     </div>
+                    <mat-hint>max 500 kb, preffered dimension 96 x 96 in pixels</mat-hint>
                     <div class="uploader">
-                        <input (change)="onLogoSelect($event) " type="file " hidden #logoFileInput accept="image/* ">
+                        <input (change)="onLogoSelect($event)" (click)="logoFileInput.value = null" type="file" hidden #logoFileInput accept="image/*">
                         <button mat-raised-button color="primary" (click)="logoFileInput.click()">Choose logo&nbsp;{{logoProgress==0?'':logoProgress+'%'}}</button><br>
-                        <img *ngFor='let url of logoPreview' [src]="url" width="200px" style="margin: 3px;border-radius: 4px;"> <br *ngIf="logoPreview.length" />
+                        <img *ngFor='let url of logoPreview' [src]="url" height="96" width="96px" style="margin: 3px;border-radius: 4px;"> <br *ngIf="logoPreview.length" />
                         <mat-progress-bar mode="determinate" *ngIf="logoProgress!=0" [value]="logoProgress"></mat-progress-bar>
                     </div>
+                    <mat-hint>max 5 mb</mat-hint>
                     <div class="uploader">
-                        <input (change)="onBrochureSelect($event) " type="file " hidden #brochureFileInput accept="application/pdf,application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <input (change)="onBrochureSelect($event)" (click)="brochureFileInput.value = null" type="file" hidden #brochureFileInput accept="application/pdf,application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                         <button mat-raised-button color="primary" (click)="brochureFileInput.click()">Choose brochure&nbsp;{{brochureProgress==0?'':brochureProgress+'%'}}</button>
                         <p>{{brochureFilename}}</p>
                         <mat-progress-bar mode="determinate" *ngIf="brochureProgress!=0" [value]="brochureProgress"></mat-progress-bar>
                     </div>
+                    <mat-hint>max {{galleryMaxCount}} pics of 1 mb each, preffered dimensions 510 x 439 in pixels</mat-hint>
                     <div class="uploader">
-                        <input (change)="onGallerySelect($event)" type="file" hidden #galleryFileInput multiple accept="image/*">
+                        <input (change)="onGallerySelect($event)" (click)="galleryFileInput.value = null" type="file" hidden #galleryFileInput multiple accept="image/*">
                         <button mat-raised-button color="primary" (click)="galleryFileInput.click()">Choose gallery&nbsp;{{galleryProgress==0?'':galleryProgress+'%'}}</button><br>
-                        <mat-hint>max {{galleryMaxCount}}</mat-hint><br>
+                        <small class="text-danger d-block" *ngFor="let info of galleryInfo">{{info}}</small><br>
                         <mat-progress-bar mode="determinate" *ngIf="galleryProgress!=0" [value]="galleryProgress"></mat-progress-bar>
                     </div>
                     <mat-spinner [diameter]="30" class="m-auto" *ngIf="isGettingGalleryDetails"></mat-spinner>
                     <div *ngIf="!isGettingGalleryDetails">
-                        <div class="gallery" fxLayout="row">
+                        <div class="gallery" fxLayout="row wrap">
                             <div class="sl-galleryTab__gallery--item" *ngFor="let url of existingGallery">
-                                <img src="https://mynestonline.com/collection/images/gallery/{{url}}" alt="Image Description" width="200px">
+                                <img style="object-fit: cover;" src="https://mynestonline.com/collection/images/gallery/{{url}}" alt="Image Description" height="170" width="146px">
                                 <button mat-icon-button color="warn" class="deleteImg" href="javascript:void(0);" (click)=deleteGalleryImage(url)><mat-icon>close</mat-icon></button>
                             </div>
                         </div>

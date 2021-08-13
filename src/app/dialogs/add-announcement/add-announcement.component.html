@@ -1,9 +1,10 @@
 <h1 mat-dialog-title>Add Announcement</h1>
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="announcementForm">
+        <mat-hint>{{announcementForm.controls.message.value.length}}/{{maxChars}}</mat-hint>
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>Announcement</mat-label>
-            <input matInput type="text" formControlName="message">
+            <textarea matInput [maxLength]="maxChars" rows="4" type="text" formControlName="message"></textarea>
         </mat-form-field>
     </form>
 </mat-dialog-content>

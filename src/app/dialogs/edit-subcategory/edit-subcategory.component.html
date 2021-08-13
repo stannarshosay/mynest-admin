@@ -5,9 +5,10 @@
             <mat-label>Sub Category Name</mat-label>
             <input matInput type="text" formControlName="subCategoryName">
         </mat-form-field>
+        <mat-hint>{{subcategoryForm.controls.description.value.length}}/{{maxChars}}</mat-hint>
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>Sub Category Description</mat-label>
-            <textarea rows="5" matInput type="text" formControlName="description"></textarea>
+            <textarea [maxLength]="maxChars" rows="5" matInput type="text" formControlName="description"></textarea>
         </mat-form-field>
     </form>
 </mat-dialog-content>

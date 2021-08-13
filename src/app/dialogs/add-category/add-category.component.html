@@ -23,10 +23,11 @@
             </mat-error>
         </mat-form-field>
         <br> <br> <br>
+        <mat-hint>max 500kb, preffered dimensions 75 x 75 in pixels</mat-hint>
         <div class="uploader">
-            <input (change)="onIconSelect($event,iconFileInput)" type="file" hidden #iconFileInput accept="image/*">
+            <input (click)="iconFileInput.value = null" (change)="onIconSelect($event,iconFileInput)" type="file" hidden #iconFileInput accept="image/*">
             <button mat-raised-button color="primary" (click)="iconFileInput.click()">Choose icon</button><br>
-            <img *ngFor='let url of iconPreview' [src]="url" height="150 " width="200px" style="margin: 3px;"> <br *ngIf="iconFile" />
+            <img *ngFor='let url of iconPreview' [src]="url" height="75 " width="75px" style="margin: 3px;"> <br *ngIf="iconFile" />
         </div>
         <br>
         <div formArrayName="subCategories" *ngFor="let item of subCategoryFormGroup.controls; let i = index;">
@@ -39,9 +40,10 @@
                     <mat-label>Sub Category Name</mat-label>
                     <input matInput type="text" formControlName="subCategoryName">
                 </mat-form-field>
+                <mat-hint>{{item.controls.description.value.length}}/{{maxChars}}</mat-hint>
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>Sub Category Description</mat-label>
-                    <textarea rows="5" matInput type="text" formControlName="description"></textarea>
+                    <textarea [maxLength]="maxChars" rows="5" matInput type="text" formControlName="description"></textarea>
                 </mat-form-field>
             </div>
         </div>

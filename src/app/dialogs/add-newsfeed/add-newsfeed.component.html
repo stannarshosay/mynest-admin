@@ -5,14 +5,16 @@
             <mat-label>Title</mat-label>
             <input matInput type="text" formControlName="title">
         </mat-form-field>
+        <mat-hint>{{newsForm.controls.description.value.length}}/{{maxChars}}</mat-hint>
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description"></textarea>
+            <textarea matInput [maxLength]="maxChars" formControlName="description"></textarea>
         </mat-form-field>
+        <mat-hint>max 2 mb</mat-hint>
         <div class="uploader">
-            <input (change)="onImageSelect($event,imageFileInput)" type="file" hidden #imageFileInput accept="image/*">
+            <input (change)="onImageSelect($event,imageFileInput)" (click)="imageFileInput.value = null" type="file" hidden #imageFileInput accept="image/*">
             <button mat-raised-button color="primary" (click)="imageFileInput.click()">Choose Image</button><br>
-            <img *ngFor='let url of imagePreview' [src]="url" height="150 " width="200px" style="margin: 3px;"> <br *ngIf="imageFile" />
+            <img *ngFor='let url of imagePreview' [src]="url" height="150 " width="200px" style="object-fit: cover; margin: 3px;"> <br *ngIf="imageFile" />
         </div>
     </form>
     <h3>{{progress==0?'':progress+'%'}}</h3>

@@ -17,6 +17,7 @@ export class AddNewsfeedComponent implements OnInit {
   imageFile:File=null;
   newsForm:FormGroup;
   progress:number = 0;
+  maxChars:string = "1000";
   constructor(
     public dialogRef: MatDialogRef<AddNewsfeedComponent>,
     private snackBar:MatSnackBar,
@@ -88,13 +89,24 @@ export class AddNewsfeedComponent implements OnInit {
   }
   
   onImageSelect(event:any,fileInput:any){
-    this.imagePreview = [];
-    this.imageFile = event.target.files[0];  
-    var reader = new FileReader();   
-    reader.onload = (event:any) => {
-      this.imagePreview.push(event.target.result);  
-    } 
-    reader.readAsDataURL(event.target.files[0]);
+    var _size = event.target.files[0].size;
+    var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),i=0;
+        while(_size>900)
+        {
+          _size/=1024;
+          i++;
+        }
+    if((((Math.round(_size*100)/100)>2)&&(i==2))||(i==3)){
+      this.showSnackbar("File size is larger than 2 MB",true,"okay");
+    }else{
+      this.imagePreview = [];
+      this.imageFile = event.target.files[0];  
+      var reader = new FileReader();   
+      reader.onload = (event:any) => {
+        this.imagePreview.push(event.target.result);  
+      } 
+      reader.readAsDataURL(event.target.files[0]);
+    }       
   }
 
 }
