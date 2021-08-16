@@ -57,6 +57,10 @@ export class HomeAdsComponent implements OnInit {
     this.getTopGalleryMobImages();
     this.getBottomGalleryMobImages();
   }
+  //greatest common divisor for aspect ratio(divide width or length by return gcd for aspect ratio)
+  gcd (a:number, b:number) {
+    return (b == 0) ? a : this.gcd (b, a%b);
+  }
   showSnackbar(content:string,hasDuration:boolean,action:string){
     const config = new MatSnackBarConfig();
     if(hasDuration){
@@ -135,7 +139,7 @@ export class HomeAdsComponent implements OnInit {
     reader.onload = (event:any) => {  
       var img = new Image();    
       img.onload = () => {
-          if((img.width == 1536)&&(img.height == 300)){
+        if((img.width/this.gcd(img.width,img.height)==128)&&(img.height/this.gcd(img.width,img.height)==25)){
             this.galleryTopFiles.push(file);
           }else{
             this.galleryTopInfo.push("File dimension of "+file.name+" is incorrect");
@@ -155,7 +159,7 @@ export class HomeAdsComponent implements OnInit {
     reader.onload = (event:any) => {  
       var img = new Image();    
       img.onload = () => {
-          if((img.width == 1536)&&(img.height == 300)){
+        if((img.width/this.gcd(img.width,img.height)==128)&&(img.height/this.gcd(img.width,img.height)==25)){
             this.galleryBottomFiles.push(file);
           }else{
             this.galleryBottomInfo.push("File dimension of "+file.name+" is incorrect");
@@ -175,7 +179,7 @@ export class HomeAdsComponent implements OnInit {
     reader.onload = (event:any) => {  
       var img = new Image();    
       img.onload = () => {
-          if((img.width == 360)&&(img.height == 180)){
+        if((img.width/this.gcd(img.width,img.height)==2)&&(img.height/this.gcd(img.width,img.height)==1)){
             this.galleryTopMobFiles.push(file);
           }else{
             this.galleryTopMobInfo.push("File dimension of "+file.name+" is incorrect");
@@ -195,7 +199,7 @@ export class HomeAdsComponent implements OnInit {
     reader.onload = (event:any) => {  
       var img = new Image();    
       img.onload = () => {
-          if((img.width == 360)&&(img.height == 180)){
+        if((img.width/this.gcd(img.width,img.height)==2)&&(img.height/this.gcd(img.width,img.height)==1)){
             this.galleryBottomMobFiles.push(file);
           }else{
             this.galleryBottomMobInfo.push("File dimension of "+file.name+" is incorrect");
